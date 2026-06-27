@@ -1,1 +1,688 @@
 
+/* ==========================================================
+POMP GUIDE 2.1 — COMPLETE STABLE BUILD
+Print-hardened + screen-polished
+========================================================== */
+
+/* ----------------------------------------------------------
+BATMAN FONTS
+---------------------------------------------------------- */
+
+@font-face {
+font-family: 'Batman Nerd';
+src: url('https://cdn.jsdelivr.net/gh/DaniiGLopez/POMPPeaceofMindPlanning/Batman%20nerd.woff') format('woff');
+font-weight: 400;
+font-style: normal;
+font-display: swap;
+}
+
+@font-face {
+font-family: 'Batman Soft';
+src: url('https://cdn.jsdelivr.net/gh/DaniiGLopez/POMPPeaceofMindPlanning/Batman%20soft.woff') format('woff');
+font-weight: 300;
+font-style: normal;
+font-display: swap;
+}
+
+/* ----------------------------------------------------------
+BRAND TOKENS
+---------------------------------------------------------- */
+
+:root {
+--pomp-forest: #4C5C53;
+--pomp-olive: #7C7D38;
+--pomp-blue: #517383;
+--pomp-tan: #C49A6C;
+--pomp-brown: #8B5E3C;
+--pomp-orange: #BE6039;
+--pomp-dark: #2B1200;
+
+--pomp-bg: #F6F2ED;
+--pomp-surface: #FFFFFF;
+--pomp-border: #DDD5C8;
+--pomp-muted: #7a7264;
+
+--font-heading: 'Batman Nerd', 'Segoe UI', Helvetica, Arial, sans-serif;
+--font-body: 'Batman Soft', 'Segoe UI', Helvetica, Arial, sans-serif;
+
+--radius-sm: 6px;
+--radius-md: 12px;
+--shadow-card: 0 2px 12px rgba(43, 18, 0, 0.07);
+}
+
+/* ----------------------------------------------------------
+BASE
+---------------------------------------------------------- */
+
+.pomp-guide {
+max-width: 900px;
+margin: 0 auto;
+padding: 28px 24px;
+font-family: var(--font-body);
+color: var(--pomp-dark);
+background: var(--pomp-bg);
+box-sizing: border-box;
+}
+
+.pomp-guide * {
+box-sizing: border-box;
+}
+
+/* ----------------------------------------------------------
+TOOLBAR
+---------------------------------------------------------- */
+
+.pomp-toolbar {
+display: flex;
+align-items: center;
+gap: 14px;
+margin-bottom: 24px;
+}
+
+.pomp-btn {
+border: none;
+padding: 10px 18px;
+border-radius: 50px;
+cursor: pointer;
+background: var(--pomp-forest);
+color: #fff;
+font-family: var(--font-heading);
+font-size: 0.9rem;
+font-weight: 700;
+letter-spacing: 0.03em;
+transition: background 0.2s ease, transform 0.15s ease;
+box-shadow: 0 3px 10px rgba(76, 92, 83, 0.25);
+}
+
+.pomp-btn:hover {
+background: var(--pomp-dark);
+transform: scale(1.04);
+}
+
+.pomp-muted {
+font-family: var(--font-body);
+color: var(--pomp-muted);
+font-size: 0.9rem;
+font-style: italic;
+}
+
+/* ----------------------------------------------------------
+ERROR
+---------------------------------------------------------- */
+
+.pomp-error {
+background: #fdecea;
+border: 1.5px solid #e57373;
+color: #b00020;
+padding: 12px 16px;
+border-radius: var(--radius-sm);
+font-family: var(--font-heading);
+font-size: 0.95rem;
+font-weight: 600;
+margin-bottom: 16px;
+}
+
+/* ----------------------------------------------------------
+COVER
+---------------------------------------------------------- */
+
+.pomp-cover {
+padding: 32px 32px 28px;
+margin-bottom: 28px;
+background: var(--pomp-surface);
+border-radius: var(--radius-md);
+border-left: 6px solid var(--pomp-orange);
+box-shadow: var(--shadow-card);
+}
+
+.pomp-brand {
+font-size: 0.78rem;
+font-weight: 600;
+letter-spacing: 0.14em;
+text-transform: uppercase;
+color: var(--pomp-forest);
+margin-bottom: 14px;
+}
+
+.pomp-cover h1 {
+font-family: var(--font-heading);
+font-size: 2.2rem;
+line-height: 1.15;
+margin: 0 0 10px;
+}
+
+.pomp-sub {
+color: var(--pomp-blue);
+font-size: 0.92rem;
+font-style: italic;
+}
+
+/* ----------------------------------------------------------
+SECTIONS
+---------------------------------------------------------- */
+
+.pomp-section {
+margin-bottom: 20px;
+padding: 22px 24px;
+background: var(--pomp-surface);
+border-radius: var(--radius-md);
+border: 1px solid var(--pomp-border);
+box-shadow: var(--shadow-card);
+}
+
+.pomp-section h2 {
+font-family: var(--font-heading);
+font-size: 1.2rem;
+color: var(--pomp-forest);
+margin: 0 0 16px;
+padding-bottom: 10px;
+border-bottom: 1.5px solid var(--pomp-border);
+}
+
+.pomp-section h3 {
+font-family: var(--font-heading);
+font-size: 1rem;
+color: var(--pomp-blue);
+margin: 0 0 10px;
+}
+
+/* ----------------------------------------------------------
+GRID
+---------------------------------------------------------- */
+
+.pomp-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 14px 24px;
+}
+
+.pomp-label {
+font-size: 0.8rem;
+font-weight: 600;
+color: var(--pomp-blue);
+text-transform: uppercase;
+letter-spacing: 0.06em;
+margin-bottom: 3px;
+}
+
+.pomp-value {
+font-size: 1rem;
+line-height: 1.5;
+}
+
+/* ----------------------------------------------------------
+CALLOUT
+---------------------------------------------------------- */
+
+.pomp-callout {
+background: rgba(196, 154, 108, 0.12);
+border: 1px solid rgba(196, 154, 108, 0.4);
+border-left: 4px solid var(--pomp-tan);
+padding: 14px 16px;
+border-radius: var(--radius-sm);
+margin-bottom: 16px;
+}
+
+/* ----------------------------------------------------------
+ITEMS
+---------------------------------------------------------- */
+
+.pomp-item {
+padding: 10px 14px;
+border: 1px solid var(--pomp-border);
+border-radius: var(--radius-sm);
+background: var(--pomp-bg);
+font-size: 0.95rem;
+line-height: 1.5;
+}
+
+/* ----------------------------------------------------------
+SERVICE VISION / VMC
+---------------------------------------------------------- */
+
+.pomp-flow {
+  margin-bottom: 18px;
+  padding: 16px;
+  border: 1px solid var(--pomp-border);
+  border-left: 4px solid var(--pomp-olive);
+  border-radius: var(--radius-md);
+  background: #fff;
+}
+
+.pomp-flow-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.pomp-flow-step {
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--pomp-bg);
+  border: 1px solid var(--pomp-border);
+}
+
+.pomp-flow-title {
+  font-family: var(--font-heading);
+  color: var(--pomp-forest);
+  font-size: 0.95rem;
+  margin-bottom: 2px;
+}
+
+.pomp-flow-detail {
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.pomp-flow-arrow {
+  text-align: center;
+  color: var(--pomp-muted);
+  font-size: 1.1rem;
+}
+
+.pomp-disposition-path {
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.pomp-3col {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  align-items: start;
+}
+
+#blockViewing,
+#blockMemorial,
+#blockCelebration {
+  padding: 16px;
+  border: 1px solid var(--pomp-border);
+  border-radius: var(--radius-md);
+  background: linear-gradient(180deg, #fff 0%, #faf7f2 100%);
+  box-shadow: 0 1px 6px rgba(43, 18, 0, 0.04);
+}
+
+#blockViewing h3,
+#blockMemorial h3,
+#blockCelebration h3 {
+  margin: 0 0 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(81, 115, 131, 0.18);
+}
+
+.pomp-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pomp-subsection + .pomp-subsection {
+  margin-top: 16px;
+}
+
+.pomp-subtitle {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pomp-blue);
+  margin: 0 0 8px;
+}
+
+#blockViewing .pomp-item,
+#blockMemorial .pomp-item,
+#blockCelebration .pomp-item {
+  background: #fff;
+  border-color: rgba(124, 125, 56, 0.18);
+}
+
+#blockViewing .pomp-item:first-child,
+#blockMemorial .pomp-item:first-child,
+#blockCelebration .pomp-item:first-child {
+  border-left: 3px solid var(--pomp-tan);
+}
+
+/* ----------------------------------------------------------
+TABLES
+---------------------------------------------------------- */
+
+table {
+width: 100%;
+border-collapse: collapse;
+font-size: 0.92rem;
+}
+
+th {
+font-family: var(--font-heading);
+font-size: 0.78rem;
+font-weight: 700;
+color: #fff;
+background: var(--pomp-forest);
+padding: 10px;
+text-align: left;
+letter-spacing: 0.04em;
+text-transform: uppercase;
+}
+
+td {
+padding: 10px;
+border-bottom: 1px solid var(--pomp-border);
+line-height: 1.45;
+}
+
+tr:nth-child(even) td {
+background: #f9f6f1;
+}
+
+.pomp-table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.pomp-table-scroll table {
+  min-width: 760px;
+}
+
+/* ----------------------------------------------------------
+FOOTER
+---------------------------------------------------------- */
+
+.pomp-footer {
+margin-top: 28px;
+padding-top: 14px;
+border-top: 1.5px solid var(--pomp-border);
+text-align: center;
+}
+
+/* ==========================================================
+PRINT HARDENED LAYER
+========================================================== */
+
+@page {
+margin: 0.7in 0.75in;
+}
+
+@media print {
+
+  .no-print { display: none !important; }
+
+  html, body { width: 100%; }
+
+  .pomp-guide {
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    box-shadow: none;
+  }
+
+  .pomp-cover {
+    box-shadow: none;
+    border: none;
+    border-bottom: 1px solid var(--pomp-border);
+    border-radius: 0;
+    padding: 0 0 12px;
+    margin-bottom: 10px;
+  }
+
+  .pomp-cover h1 {
+    font-size: 1.65rem;
+    margin-bottom: 4px;
+  }
+
+  .pomp-brand {
+    margin-bottom: 6px;
+  }
+
+  .pomp-section {
+    box-shadow: none;
+    border: none;
+    border-bottom: 1px solid var(--pomp-border);
+    border-radius: 0;
+    padding: 10px 0;
+    margin-bottom: 0;
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+
+  .pomp-section h2 {
+    font-size: 1.05rem;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+  }
+
+  .pomp-section h3 {
+    font-size: 0.95rem;
+    margin-bottom: 6px;
+  }
+
+  h2, h3 {
+    break-after: avoid;
+  }
+
+  .pomp-callout,
+  .pomp-flow,
+  #blockViewing,
+  #blockMemorial,
+  #blockCelebration,
+  .pomp-mobile-card,
+  .pomp-item {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .pomp-callout,
+  .pomp-flow {
+    padding: 9px 11px;
+    margin-bottom: 8px;
+  }
+
+  .pomp-flow-step,
+  .pomp-item,
+  .pomp-mobile-card {
+    padding: 7px 9px;
+  }
+
+  .pomp-flow-steps,
+  .pomp-list,
+  .pomp-mobile-cards {
+    gap: 6px;
+  }
+
+  .pomp-flow-arrow {
+    font-size: 0.9rem;
+    line-height: 1;
+  }
+
+  .pomp-grid {
+    gap: 8px 18px;
+  }
+
+  .pomp-label,
+  .pomp-mobile-label {
+    font-size: 0.7rem;
+    margin-bottom: 1px;
+  }
+
+  .pomp-value,
+  .pomp-mobile-value,
+  .pomp-item,
+  .pomp-flow-detail {
+    font-size: 0.9rem;
+    line-height: 1.32;
+  }
+
+  table {
+    break-inside: auto;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tr {
+    break-inside: avoid;
+  }
+
+  th {
+    background: #4C5C53 !important;
+    color: #fff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  tr:nth-child(even) td {
+    background: #f5f5f5 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .pomp-3col {
+    display: block !important;
+  }
+
+  #blockViewing,
+  #blockMemorial,
+  #blockCelebration {
+    width: 100%;
+    margin-bottom: 8px;
+    padding: 10px;
+  }
+
+  .pomp-subsection + .pomp-subsection {
+    margin-top: 8px;
+  }
+
+  .pomp-label,
+  .pomp-value {
+    word-break: keep-all;
+  }
+  
+/* Print-only: compact card grids */
+  
+#secContacts .pomp-mobile-cards,
+#secInsurance .pomp-mobile-cards {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 8px;
+  width: 100%;
+}
+
+#secContacts .pomp-mobile-card,
+#secInsurance .pomp-mobile-card {
+  padding: 7px 9px;
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.pomp-mobile-row + .pomp-mobile-row {
+  margin-top: 4px;
+}
+
+/* Print-only: reduce orphan final pages */
+.pomp-footer {
+  margin-top: 6px;
+  padding-top: 5px;
+  font-size: 0.78rem;
+}
+
+#secFunding {
+  padding-bottom: 6px;
+}
+
+/* Print-only: tighten Service Vision */
+  
+.pomp-flow-step {
+  padding: 6px 8px;
+}
+
+.pomp-flow-arrow {
+  margin: -2px 0;
+}
+
+.pomp-callout {
+  margin-bottom: 7px;
+}
+  
+}
+
+/* ----------------------------------------------------------
+CARD LAYOUTS
+---------------------------------------------------------- */
+
+.pomp-desktop-only {
+  display: block;
+}
+
+.pomp-mobile-only {
+  display: none;
+}
+
+.pomp-mobile-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pomp-mobile-card {
+  padding: 12px 14px;
+  border: 1px solid var(--pomp-border);
+  border-radius: var(--radius-sm);
+  background: var(--pomp-bg);
+}
+
+.pomp-mobile-row + .pomp-mobile-row {
+  margin-top: 8px;
+}
+
+.pomp-mobile-label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--pomp-blue);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 2px;
+}
+
+.pomp-mobile-value {
+  display: block;
+  line-height: 1.45;
+  color: var(--pomp-dark);
+}
+
+
+/* ----------------------------------------------------------
+RESPONSIVE
+---------------------------------------------------------- */
+
+@media (max-width: 820px) {
+  .pomp-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pomp-3col {
+    grid-template-columns: 1fr;
+  }
+
+  .pomp-desktop-only {
+    display: none;
+  }
+
+  .pomp-mobile-only {
+    display: block;
+  }
+}
