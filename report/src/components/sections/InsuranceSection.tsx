@@ -1,10 +1,27 @@
 import type { PompPlan } from "../../types/plan";
 import { colors } from "../../theme/colors";
-import { valueOrNull } from "../../utils/format";
+import { formatAmount, valueOrNull } from "../../utils/format";
 
 type InsuranceSectionProps = {
   plan: PompPlan;
 };
+
+function Label({ children }: { children: React.ReactNode }) {
+  return (
+    <div
+      style={{
+        fontSize: 10,
+        fontWeight: 700,
+        letterSpacing: 2,
+        textTransform: "uppercase",
+        color: colors.muted,
+        marginBottom: 4,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
 
 function PolicyCard({
   carrier,
@@ -12,19 +29,23 @@ function PolicyCard({
   type,
   beneficiary,
   policyNumber,
+  riders,
+  isLast,
 }: {
   carrier?: string;
   amount?: string;
   type?: string;
   beneficiary?: string;
   policyNumber?: string;
+  riders?: string;
+  isLast?: boolean;
 }) {
   return (
     <div
       style={{
         border: `1px solid ${colors.border}`,
         background: colors.white,
-        marginBottom: 20,
+        marginBottom: isLast ? 0 : 20,
       }}
     >
       <div
@@ -34,14 +55,25 @@ function PolicyCard({
           padding: 20,
           display: "flex",
           justifyContent: "space-between",
+          alignItems: "flex-start",
         }}
       >
         <div>
-          <div style={{ fontSize: 18, fontWeight: 700 }}>
+          <div
+            style={{
+              fontSize: 18,
+              fontWeight: 700,
+            }}
+          >
             {carrier || "Unknown Carrier"}
           </div>
 
-          <div style={{ opacity: 0.8 }}>
+          <div
+            style={{
+              opacity: 0.8,
+              marginTop: 4,
+            }}
+          >
             {type || "Unknown Policy Type"}
           </div>
         </div>
@@ -52,7 +84,7 @@ function PolicyCard({
             fontWeight: 700,
           }}
         >
-          {amount || "—"}
+          {formatAmount(amount) || "—"}
         </div>
       </div>
 
@@ -65,15 +97,52 @@ function PolicyCard({
         }}
       >
         <div>
-          <strong>Policy Number</strong>
-          <div>{valueOrNull(policyNumber) || "Not recorded"}</div>
+          <Label>Policy Number</Label>
+          <div
+            style={{
+              fontSize: 14,
+              color: colors.darkBrown,
+            }}
+          >
+            {valueOrNull(policyNumber) || "Not recorded"}
+          </div>
         </div>
 
         <div>
-          <strong>Beneficiary</strong>
-          <div>{valueOrNull(beneficiary) || "Not recorded"}</div>
+          <Label>Beneficiary</Label>
+          <div
+            style={{
+              fontSize: 14,
+              color: colors.darkBrown,
+            }}
+          >
+            {valueOrNull(beneficiary) || "Not recorded"}
+          </div>
         </div>
       </div>
+
+      {valueOrNull(riders) && (
+        <div
+          style={{
+            borderTop: `1px solid ${colors.border}`,
+            padding: "12px 24px",
+            fontSize: 13,
+            color: colors.muted,
+          }}
+        >
+          <span
+            style={{
+              fontWeight: 700,
+              textTransform: "uppercase",
+              fontSize: 10,
+              letterSpacing: 2,
+            }}
+          >
+            Riders
+          </span>{" "}
+          {riders}
+        </div>
+      )}
     </div>
   );
 }
@@ -90,12 +159,14 @@ export function InsuranceSection({
     >
       {plan.insurance.map((policy, index) => (
         <PolicyCard
-          key={index}
+          key={`${policy.policy_number ?? "policy"}-${index}`}
           carrier={policy.carrier}
           amount={policy.face_amount}
           type={policy.policy_type}
           beneficiary={policy.beneficiaries}
           policyNumber={policy.policy_number}
+          riders={policy.riders}
+          isLast={index === plan.insurance.length - 1}
         />
       ))}
     </section>

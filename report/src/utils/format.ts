@@ -39,3 +39,18 @@ export const formatDate = (date?: string) => {
     return date;
   }
 };
+
+export const formatAmount = (raw?: string | null) => {
+  if (!raw?.trim()) return null;
+
+  const cleaned = raw.replace(/[$,\s]/g, "");
+  const amount = Number.parseFloat(cleaned);
+
+  if (Number.isNaN(amount)) {
+    return raw.trim();
+  }
+
+  return `$${amount.toLocaleString("en-US", {
+    maximumFractionDigits: 2,
+  })}`;
+};
