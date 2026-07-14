@@ -21,7 +21,7 @@ function SummaryField({ label, value }: { label: string; value: string | null })
 
 export function ExecutiveSummary({ plan }: ExecutiveSummaryProps) {
   const primaryContacts = plan.contacts.filter((contact) =>
-    contact.notes.toLowerCase().includes("primary")
+ (contact.notes ?? "").toLowerCase().includes("primary")
   );
 
   return (
