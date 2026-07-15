@@ -1,53 +1,110 @@
 import type { PompPlan } from "../../types/plan";
 import { colors } from "../../theme/colors";
 import { valueOrNull } from "../../utils/format";
+import { Field } from "../layout/Field";
 
 type LegalSectionProps = {
   plan: PompPlan;
 };
 
-function LegalField({ label, value }: { label: string; value?: string }) {
-  return (
-    <div>
-      <p style={{ letterSpacing: 2, color: colors.muted, fontSize: 11 }}>
-        {label}
-      </p>
-      <p style={{ fontSize: 16, color: colors.darkBrown }}>
-        {valueOrNull(value) || "Not recorded"}
-      </p>
-    </div>
-  );
-}
-
 export function LegalSection({ plan }: LegalSectionProps) {
   const legal = plan.legal;
 
   return (
-    <section style={{ background: colors.cream, padding: 64 }}>
+    <section
+      style={{
+        background: colors.cream,
+        padding: 64,
+      }}
+    >
       <div
         style={{
           background: colors.stone,
           border: `1px solid ${colors.border}`,
-          padding: 20,
+          padding: "14px 20px",
           marginBottom: 32,
+          fontSize: 12,
+          color: colors.muted,
+          display: "flex",
+          alignItems: "center",
+          gap: 10,
+          lineHeight: 1.5,
         }}
       >
-        🔒 This section contains sensitive personal information. Share only with authorized parties.
+        <span aria-hidden="true">🔒</span>
+
+        <span>
+          This section contains sensitive personal information. Share only with
+          authorized parties.
+        </span>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32 }}>
-        <LegalField label="LEGAL NAME" value={legal.legal_name} />
-        <LegalField label="SEX" value={legal.sex} />
-        <LegalField label="DATE OF BIRTH" value={legal.dob} />
-        <LegalField label="PLACE OF BIRTH" value={legal.place_of_birth} />
-        <LegalField label="COUNTY" value={legal.county} />
-        <LegalField label="HISPANIC ORIGIN" value={legal.hispanic_origin} />
-        <LegalField label="FATHER'S LEGAL NAME" value={legal.father_legal_name} />
-        <LegalField label="MOTHER'S MAIDEN NAME" value={legal.mother_maiden_name} />
-        <LegalField label="VETERAN STATUS" value={legal.veteran_status} />
-        <LegalField label="VETERAN NOTES" value={legal.veteran_notes} />
-        <LegalField label="FLAG PRESENTED TO" value={legal.flag_presented_to} />
-        <LegalField label="DD-214 LOCATION" value={legal.dd214_location} />
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: 32,
+        }}
+      >
+        <Field
+          label="Legal Name"
+          value={valueOrNull(legal.legal_name)}
+        />
+
+        <Field
+          label="Sex"
+          value={valueOrNull(legal.sex)}
+        />
+
+        <Field
+          label="Date of Birth"
+          value={valueOrNull(legal.dob)}
+        />
+
+        <Field
+          label="Place of Birth"
+          value={valueOrNull(legal.place_of_birth)}
+        />
+
+        <Field
+          label="County"
+          value={valueOrNull(legal.county)}
+        />
+
+        <Field
+          label="Hispanic Origin"
+          value={valueOrNull(legal.hispanic_origin)}
+        />
+
+        <Field
+          label="Father's Legal Name"
+          value={valueOrNull(legal.father_legal_name)}
+        />
+
+        <Field
+          label="Mother's Maiden Name"
+          value={valueOrNull(legal.mother_maiden_name)}
+        />
+
+        <Field
+          label="Veteran Status"
+          value={valueOrNull(legal.veteran_status)}
+        />
+
+        <Field
+          label="Veteran Notes"
+          value={valueOrNull(legal.veteran_notes)}
+        />
+
+        <Field
+          label="Flag Presented To"
+          value={valueOrNull(legal.flag_presented_to)}
+        />
+
+        <Field
+          label="DD-214 Location"
+          value={valueOrNull(legal.dd214_location)}
+        />
       </div>
     </section>
   );
