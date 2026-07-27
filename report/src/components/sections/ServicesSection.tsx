@@ -219,6 +219,12 @@ export function ServicesSection({ plan }: ServicesSectionProps) {
     special_requests,
   } = plan.services;
 
+  const servicesSelected = Array.isArray(
+    plan.services?.services_selected,
+  )
+    ? plan.services.services_selected
+    : [];
+
   const resolvedMood = valueOrNull(service_mood);
   const resolvedRequests = valueOrNull(special_requests);
 
@@ -235,7 +241,7 @@ export function ServicesSection({ plan }: ServicesSectionProps) {
           gap: 20,
         }}
       >
-        {plan.services.services_selected.includes("viewing") && (
+        {servicesSelected.includes("viewing") && (
           <ServiceCard
             title="Viewing"
             locationName={viewing.location_name}
@@ -245,7 +251,7 @@ export function ServicesSection({ plan }: ServicesSectionProps) {
           />
         )}
 
-        {plan.services.services_selected.includes("memorial") && (
+        {servicesSelected.includes("memorial") && (
           <ServiceCard
             title="Memorial"
             locationName={memorial.location_name}
@@ -255,7 +261,7 @@ export function ServicesSection({ plan }: ServicesSectionProps) {
           />
         )}
 
-        {plan.services.services_selected.includes("celebration") && (
+        {servicesSelected.includes("celebration") && (
           <ServiceCard
             title="Celebration of Life"
             locationName={celebration.location_name}

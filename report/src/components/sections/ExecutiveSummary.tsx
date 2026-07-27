@@ -47,6 +47,12 @@ function SummaryField({
 }
 
 export function ExecutiveSummary({ plan }: ExecutiveSummaryProps) {
+  const servicesSelected = Array.isArray(
+    plan.services?.services_selected,
+  )
+    ? plan.services.services_selected
+    : [];
+
   const primaryContacts = plan.contacts.filter((contact) =>
     (contact.notes ?? "").toLowerCase().includes("primary"),
   );
@@ -114,8 +120,8 @@ export function ExecutiveSummary({ plan }: ExecutiveSummaryProps) {
         <SummaryField
           label="SERVICES"
           value={
-            plan.services.services_selected.length > 0
-              ? plan.services.services_selected.join(", ")
+            servicesSelected.length > 0
+              ? servicesSelected.join(", ")
               : null
           }
         />
