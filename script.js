@@ -1,6 +1,6 @@
 
 (function () {
-const WEBHOOK_URL = "https://hook.us2.make.com/eh74qn7yg2mey49vvu209tjeyhgtiwns";
+const SECURE_API_BASE = "https://secure.yourpomp.com";
 
 /* ----------------------------------------------------------
 UTILITIES
@@ -636,14 +636,21 @@ return new URLSearchParams(window.location.search).get("client_id");
 }
 
 async function loadSnapshot(clientId) {
-const res = await fetch(WEBHOOK_URL, {
-method: "POST",
-headers: { "Content-Type": "application/json" },
-body: JSON.stringify({ mode: "load", client_id: clientId })
-});
-if (!res.ok) throw new Error("Load failed");
-const raw = await res.json();
-return (Array.isArray(raw) && raw[0]?.body) ? JSON.parse(raw[0].body) : raw;
+  const res = await fetch(
+    `${SECURE_API_BASE}/api/client/${encodeURIComponent(clientId)}`
+  );
+
+  if (!res.ok) {
+    throw new Error(`Load failed with status ${res.status}`);
+  }
+
+  const data = await res.json();
+
+  if (!data?.ok || !data?.snapshot) {
+    throw new Error("Client not found");
+  }
+
+  return data.snapshot;
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -663,7 +670,7 @@ if (!snapshot?.client_id) throw new Error("Client not found");
 render(snapshot);
 setStatus("");
 } catch (e) {
-showError("Could not load this guide. Check client_id and webhook response.");
+showError("Could not load this guide. Check the client ID and try again.");
 setStatus("");
 }
 });
