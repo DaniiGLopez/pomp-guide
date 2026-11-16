@@ -379,6 +379,65 @@ function renderContacts(contacts) {
   });
 }
 
+/* Premium amount + payment frequency (insurance[].premium_amount / premium_frequency).
+   Secure stores frequency as one of these keys; anything else is shown as typed. */
+const PREMIUM_FREQUENCY_LABELS = {
+  monthly: "monthly",
+  quarterly: "quarterly",
+  semi_annual: "semi-annual",
+  annual: "annual",
+  single_premium: "single premium"
+};
+
+const PREMIUM_FREQUENCY_ALIASES = {
+  semiannual: "semi_annual",
+  single: "single_premium"
+};
+
+function formatPremiumFrequency(raw) {
+  if (!nonEmpty(raw)) return "";
+  const text = raw.toString().trim();
+  let key = text.toLowerCase().replace(/[\s-]+/g, "_");
+  key = PREMIUM_FREQUENCY_ALIASES[key] || key;
+  // Own keys only, so a stored value like "constructor" is just text.
+  return Object.prototype.hasOwnProperty.call(PREMIUM_FREQUENCY_LABELS, key)
+    ? PREMIUM_FREQUENCY_LABELS[key]
+    : text;
+}
+
+function formatPremiumAmount(raw) {
+  if (!nonEmpty(raw)) return "";
+  const text = raw.toString().trim();
+  const digits = text.replace(/[$,\s]/g, "");
+  // Plain amounts with at most two decimals become $48.20; anything else
+  // ("about 50", 48.205) is shown exactly as the client typed it.
+  if (/^\d+(\.\d{1,2})?$/.test(digits)) {
+    return "$" + Number(digits).toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  }
+  return text;
+}
+
+/* Returns { label, value } or null when both are blank. Amount and frequency
+   are shown together only when both were entered; a frequency is never
+   inferred for an amount, nor an amount for a frequency. */
+function formatPremium(policy) {
+  const amount = formatPremiumAmount(policy?.premium_amount);
+  const frequency = formatPremiumFrequency(policy?.premium_frequency);
+
+  if (amount && frequency) return { label: "Premium", value: `${amount} ${frequency}` };
+  if (amount) return { label: "Premium", value: amount };
+  if (frequency) {
+    return {
+      label: "Premium frequency",
+      value: frequency.charAt(0).toUpperCase() + frequency.slice(1)
+    };
+  }
+  return null;
+}
+
 function renderInsurance(insurance) {
   const valid = (Array.isArray(insurance) ? insurance : []).filter(p => anyNonEmpty(p));
   if (!valid.length) { hide("secInsurance"); return; }
@@ -392,12 +451,14 @@ function renderInsurance(insurance) {
   valid.forEach(p => {
     const card = document.createElement("div");
     card.className = "pomp-mobile-card";
+    const premium = formatPremium(p);
     card.innerHTML = `
       ${nonEmpty(p.insured_name) ? `<div class="pomp-mobile-row"><span class="pomp-mobile-label">Insured</span><span class="pomp-mobile-value">${escapeHtml(p.insured_name)}</span></div>` : ""}
       ${nonEmpty(p.carrier) ? `<div class="pomp-mobile-row"><span class="pomp-mobile-label">Carrier</span><span class="pomp-mobile-value">${escapeHtml(p.carrier)}</span></div>` : ""}
       ${nonEmpty(p.policy_number) ? `<div class="pomp-mobile-row"><span class="pomp-mobile-label">Policy #</span><span class="pomp-mobile-value">${escapeHtml(p.policy_number)}</span></div>` : ""}
       ${nonEmpty(p.policy_type) ? `<div class="pomp-mobile-row"><span class="pomp-mobile-label">Type</span><span class="pomp-mobile-value">${escapeHtml(p.policy_type)}</span></div>` : ""}
       ${nonEmpty(p.face_amount) ? `<div class="pomp-mobile-row"><span class="pomp-mobile-label">Face Amount</span><span class="pomp-mobile-value">${escapeHtml(p.face_amount)}</span></div>` : ""}
+      ${premium ? `<div class="pomp-mobile-row"><span class="pomp-mobile-label">${escapeHtml(premium.label)}</span><span class="pomp-mobile-value">${escapeHtml(premium.value)}</span></div>` : ""}
       ${nonEmpty(p.beneficiaries) ? `<div class="pomp-mobile-row"><span class="pomp-mobile-label">Beneficiaries</span><span class="pomp-mobile-value">${escapeHtml(p.beneficiaries)}</span></div>` : ""}
       ${nonEmpty(p.riders) ? `<div class="pomp-mobile-row"><span class="pomp-mobile-label">Riders / Notes</span><span class="pomp-mobile-value">${escapeHtml(p.riders)}</span></div>` : ""}
     `;
