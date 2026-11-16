@@ -90,6 +90,9 @@ export type PompPlan = {
 
     service_mood?: string;
     special_requests?: string;
+    /** Optional note the client wrote for their family (Secure: "Message for
+     * Your Family"). Shown as "In Your Own Words". */
+    family_message?: string;
   };
 
   contacts: Contact[];
