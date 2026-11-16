@@ -463,6 +463,7 @@ function renderInsurance(insurance) {
       ${nonEmpty(p.policy_type) ? `<div class="pomp-mobile-row"><span class="pomp-mobile-label">Type</span><span class="pomp-mobile-value">${escapeHtml(p.policy_type)}</span></div>` : ""}
       ${nonEmpty(p.face_amount) ? `<div class="pomp-mobile-row"><span class="pomp-mobile-label">Face Amount</span><span class="pomp-mobile-value">${escapeHtml(p.face_amount)}</span></div>` : ""}
       ${premium ? `<div class="pomp-mobile-row"><span class="pomp-mobile-label">${escapeHtml(premium.label)}</span><span class="pomp-mobile-value">${escapeHtml(premium.value)}</span></div>` : ""}
+      ${nonEmpty(p.payment_timing) ? `<div class="pomp-mobile-row"><span class="pomp-mobile-label">Draft schedule</span><span class="pomp-mobile-value">${escapeHtml(p.payment_timing.toString().trim())}</span></div>` : ""}
       ${nonEmpty(p.beneficiaries) ? `<div class="pomp-mobile-row"><span class="pomp-mobile-label">Beneficiaries</span><span class="pomp-mobile-value">${escapeHtml(p.beneficiaries)}</span></div>` : ""}
       ${nonEmpty(p.riders) ? `<div class="pomp-mobile-row"><span class="pomp-mobile-label">Riders / Notes</span><span class="pomp-mobile-value">${escapeHtml(p.riders)}</span></div>` : ""}
     `;
