@@ -69,6 +69,8 @@ export const samplePlanSynthetic: PompPlan = {
     service_mood: "Warm and relaxed. Please keep it short.",
     special_requests:
       "No dark colors, please.\nDonations to the county library in place of flowers.",
+    family_message:
+      "Thank you for being here.\n\nPlay the music loud, tell the stories twice,\n  and please don't let anyone cry over the casserole.\n\nI love you all. - J.",
   },
 
   contacts: [

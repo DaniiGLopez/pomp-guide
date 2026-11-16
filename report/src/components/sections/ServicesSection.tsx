@@ -217,6 +217,7 @@ export function ServicesSection({ plan }: ServicesSectionProps) {
     celebration,
     service_mood,
     special_requests,
+    family_message,
   } = plan.services;
 
   const servicesSelected = Array.isArray(
@@ -227,6 +228,13 @@ export function ServicesSection({ plan }: ServicesSectionProps) {
 
   const resolvedMood = valueOrNull(service_mood);
   const resolvedRequests = valueOrNull(special_requests);
+
+  // The client's own wording: only outer whitespace is trimmed, and text such
+  // as "N/A" is not second-guessed the way valueOrNull would.
+  const familyMessage =
+    typeof family_message === "string" && family_message.trim() !== ""
+      ? family_message.trim()
+      : null;
 
   return (
     <section
@@ -241,6 +249,46 @@ export function ServicesSection({ plan }: ServicesSectionProps) {
           gap: 20,
         }}
       >
+        {familyMessage && (
+          <div
+            className="pomp-keep"
+            style={{
+              background: colors.white,
+              padding: "28px 32px",
+              borderLeft: `4px solid ${colors.lightBrown}`,
+              textAlign: "left",
+              breakInside: "avoid",
+            }}
+          >
+            <div
+              style={{
+                fontSize: 10,
+                fontWeight: 700,
+                letterSpacing: 2,
+                textTransform: "uppercase",
+                color: colors.muted,
+                marginBottom: 12,
+              }}
+            >
+              In Your Own Words
+            </div>
+
+            {/* pre-wrap keeps the client's line breaks and spacing */}
+            <div
+              style={{
+                fontSize: 17,
+                fontStyle: "italic",
+                lineHeight: 1.75,
+                color: colors.darkBrown,
+                whiteSpace: "pre-wrap",
+                overflowWrap: "anywhere",
+              }}
+            >
+              {familyMessage}
+            </div>
+          </div>
+        )}
+
         {servicesSelected.includes("viewing") && (
           <ServiceCard
             title="Viewing"
