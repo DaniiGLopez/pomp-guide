@@ -1,6 +1,11 @@
 import type { PompPlan } from "../../types/plan";
 import { colors } from "../../theme/colors";
 import { valueOrNull } from "../../utils/format";
+import {
+  FUNDING_APPROACH_LABELS,
+  YES_NO_UNSURE_LABELS,
+  formatChoice,
+} from "../../utils/choices";
 
 type FundingSectionProps = {
   plan: PompPlan;
@@ -12,6 +17,7 @@ export function FundingSection({ plan }: FundingSectionProps) {
   return (
     <section style={{ background: colors.cream, padding: 64 }}>
       <div
+        className="pomp-keep"
         style={{
           background: colors.white,
           border: `1px solid ${colors.border}`,
@@ -23,12 +29,17 @@ export function FundingSection({ plan }: FundingSectionProps) {
         </p>
 
         <h3 style={{ color: colors.forestGreen, fontSize: 26 }}>
-          {valueOrNull(funding.funding_approach) || "Not recorded"}
+          {formatChoice(funding.funding_approach, FUNDING_APPROACH_LABELS) ||
+            "Not recorded"}
         </h3>
 
         <p style={{ marginTop: 20 }}>
           <strong>Would like help reviewing:</strong>{" "}
-          {valueOrNull(funding.would_like_help_reviewing) || "Not recorded"}
+          {formatChoice(
+            valueOrNull(funding.would_like_help_reviewing) ??
+              funding.funding_help_requested,
+            YES_NO_UNSURE_LABELS,
+          ) || "Not recorded"}
         </p>
       </div>
     </section>

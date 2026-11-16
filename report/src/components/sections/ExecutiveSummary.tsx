@@ -1,6 +1,10 @@
 import type { PompPlan } from "../../types/plan";
 import { colors } from "../../theme/colors";
 import { formatPhone, valueOrNull } from "../../utils/format";
+import {
+  formatDisposition,
+  formatServicesSelected,
+} from "../../utils/choices";
 
 type ExecutiveSummaryProps = {
   plan: PompPlan;
@@ -47,12 +51,6 @@ function SummaryField({
 }
 
 export function ExecutiveSummary({ plan }: ExecutiveSummaryProps) {
-  const servicesSelected = Array.isArray(
-    plan.services?.services_selected,
-  )
-    ? plan.services.services_selected
-    : [];
-
   const primaryContacts = plan.contacts.filter((contact) =>
     (contact.notes ?? "").toLowerCase().includes("primary"),
   );
@@ -109,7 +107,10 @@ export function ExecutiveSummary({ plan }: ExecutiveSummaryProps) {
 
         <SummaryField
           label="DISPOSITION"
-          value={valueOrNull(plan.services.disposition)}
+          value={formatDisposition(
+            plan.services?.disposition,
+            plan.services?.disposition_other,
+          )}
         />
 
         <SummaryField
@@ -119,11 +120,9 @@ export function ExecutiveSummary({ plan }: ExecutiveSummaryProps) {
 
         <SummaryField
           label="SERVICES"
-          value={
-            servicesSelected.length > 0
-              ? servicesSelected.join(", ")
-              : null
-          }
+          value={formatServicesSelected(
+            plan.services?.services_selected,
+          )}
         />
 
         <SummaryField

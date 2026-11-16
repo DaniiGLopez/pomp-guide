@@ -19,6 +19,7 @@ export function ContactsSection({ plan }: ContactsSectionProps) {
         {plan.contacts.map((contact) => (
           <div
             key={contact.name}
+            className="pomp-keep"
             style={{
               background: colors.white,
               border: `1px solid ${colors.border}`,

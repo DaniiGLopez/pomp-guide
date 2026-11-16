@@ -42,6 +42,7 @@ function PolicyCard({
 }) {
   return (
     <div
+      className="pomp-keep"
       style={{
         border: `1px solid ${colors.border}`,
         background: colors.white,

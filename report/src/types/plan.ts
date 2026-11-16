@@ -134,13 +134,33 @@ export type PompPlan = {
     funding_help_requested?: string;
   };
 
-  obituary?: {
-    obituary_name?: string;
-    publications?: string[];
-    draft_text?: string;
-    tone?: string;
-    family_list?: string;
-    include_service_details?: boolean;
-    photo_url?: string;
-  };
+  obituary?: ObituaryRecord;
+};
+
+/**
+ * Obituary planning data as saved by Secure under `snapshot.obituary`.
+ * The canonical keys come first; the aliases are older shapes that Secure's
+ * `hydrateObituary` still reads, so the Report reads them too.
+ */
+export type ObituaryRecord = {
+  obituary_name?: string;
+  publications?: string[] | string;
+  tone?: string;
+  family_list?: string;
+  draft_text?: string;
+  include_service_details?: boolean | string;
+  photo_url?: string;
+
+  // Legacy aliases (see hydrateObituary in Secure's script.js)
+  name?: string;
+  name_to_use?: string;
+  publication_list?: string[] | string;
+  publication?: string[] | string;
+  preferred_tone?: string;
+  family_members?: string[] | string;
+  family_notes?: string;
+  draft?: string;
+  text?: string;
+  notes?: string;
+  photo_link?: string;
 };

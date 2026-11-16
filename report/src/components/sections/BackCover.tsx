@@ -8,6 +8,7 @@ type BackCoverProps = {
 export function BackCover({ plan }: BackCoverProps) {
   return (
     <section
+      className="pomp-back"
       style={{
         background: colors.darkBrown,
         color: colors.white,
