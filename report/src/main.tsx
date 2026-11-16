@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
 import "./theme/fonts.css";
+import "./print.css";
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

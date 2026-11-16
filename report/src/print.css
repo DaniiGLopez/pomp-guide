@@ -1,0 +1,60 @@
+/*
+ * Print layout for the Report (US Letter).
+ *
+ * The cover, each chapter, and the back cover start on their own page; cards
+ * and note blocks are not split across pages; the opening note stays with the
+ * summary so the summary lands on page 2. Backgrounds are forced on because
+ * browsers drop them by default, which would turn the dark chapter pages white.
+ */
+@media print {
+  @page {
+    size: Letter;
+    margin: 0;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  #root {
+    width: auto;
+    border-inline: 0;
+    min-height: 0;
+  }
+
+  /* One full page. The cover's padding is outside its height by default. */
+  .pomp-cover {
+    box-sizing: border-box;
+    min-height: 0 !important;
+    height: 11in;
+    break-after: page;
+  }
+
+  .pomp-note {
+    break-after: avoid;
+  }
+
+  .pomp-exec {
+    break-inside: avoid;
+  }
+
+  /* Compact divider so a chapter's divider and content share a page. */
+  .pomp-chapter {
+    min-height: 0 !important;
+    padding-top: 56px !important;
+    padding-bottom: 56px !important;
+    break-before: page;
+    break-after: avoid;
+  }
+
+  .pomp-back {
+    break-before: page;
+    break-inside: avoid;
+  }
+
+  .loc,
+  .pomp-keep {
+    break-inside: avoid;
+  }
+}
