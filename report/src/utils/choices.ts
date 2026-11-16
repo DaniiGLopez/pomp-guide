@@ -69,8 +69,10 @@ export function formatChoice(
   const text = valueOrNull(value);
   if (!text) return null;
 
-  const known = labels[choiceKey(text)];
-  if (known) return known;
+  // Own keys only: a stored value like "constructor" or "__proto__" must not
+  // resolve to something inherited from Object.prototype.
+  const key = choiceKey(text);
+  if (Object.hasOwn(labels, key)) return labels[key];
 
   if (CODE_LIKE.test(text)) {
     const words = text.replace(/[_-]+/g, " ");

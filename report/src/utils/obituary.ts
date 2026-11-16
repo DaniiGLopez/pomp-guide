@@ -27,10 +27,30 @@ function text(value: unknown): string | null {
   return null;
 }
 
-/** First non-blank value, in the same order as Secure's hydrateObituary. */
-function firstText(...values: unknown[]): string | null {
-  for (const value of values) {
-    const found = text(value);
+/** A field counts as saved when the key is present with any value but null,
+ * including "" or []: that is how Secure records a field the user cleared. */
+function isPresent(record: ObituaryRecord, key: keyof ObituaryRecord) {
+  return (
+    Object.prototype.hasOwnProperty.call(record, key) &&
+    record[key] !== undefined &&
+    record[key] !== null
+  );
+}
+
+/**
+ * Reads the current field when it is present, even if it is empty, so a
+ * cleared field stays cleared. The older alias keys are only used when the
+ * current key is absent (records saved before the current shape existed).
+ */
+function currentOrLegacy(
+  record: ObituaryRecord,
+  current: keyof ObituaryRecord,
+  ...legacy: (keyof ObituaryRecord)[]
+): string | null {
+  if (isPresent(record, current)) return text(record[current]);
+
+  for (const key of legacy) {
+    const found = text(record[key]);
     if (found) return found;
   }
   return null;
@@ -64,41 +84,44 @@ export function safeHttpUrl(value: unknown): string | null {
 }
 
 /**
- * Reads `snapshot.obituary` the way Secure's hydrateObituary does, including
- * the legacy aliases. Returns null when nothing meaningful was saved, so the
- * Report can hide the section entirely.
+ * Reads `snapshot.obituary`. Current keys win whenever they are present;
+ * legacy aliases (the ones Secure's hydrateObituary still knows) fill in only
+ * when the current key is absent. Returns null when nothing meaningful is
+ * saved, so the Report can hide the section entirely.
  */
 export function getObituaryView(
   obituary: ObituaryRecord | null | undefined,
 ): ObituaryView | null {
   if (!obituary || typeof obituary !== "object") return null;
 
+  const photoRaw = isPresent(obituary, "photo_url")
+    ? obituary.photo_url
+    : obituary.photo_link;
+
   const view: ObituaryView = {
-    name: firstText(
-      obituary.name,
-      obituary.obituary_name,
-      obituary.name_to_use,
+    name: currentOrLegacy(obituary, "obituary_name", "name", "name_to_use"),
+    publications: currentOrLegacy(
+      obituary,
+      "publications",
+      "publication_list",
+      "publication",
     ),
-    publications: firstText(
-      obituary.publications,
-      obituary.publication_list,
-      obituary.publication,
+    tone: currentOrLegacy(obituary, "tone", "preferred_tone"),
+    familyList: currentOrLegacy(
+      obituary,
+      "family_list",
+      "family_members",
+      "family_notes",
     ),
-    tone: firstText(obituary.tone, obituary.preferred_tone),
-    familyList: firstText(
-      obituary.family_list,
-      obituary.family_members,
-      obituary.family_notes,
-    ),
-    draftText: firstText(
-      obituary.draft_text,
-      obituary.draft,
-      obituary.text,
-      obituary.notes,
+    draftText: currentOrLegacy(
+      obituary,
+      "draft_text",
+      "draft",
+      "text",
+      "notes",
     ),
     includeServiceDetails: yesNo(obituary.include_service_details),
-    photoUrl:
-      safeHttpUrl(obituary.photo_url) ?? safeHttpUrl(obituary.photo_link),
+    photoUrl: safeHttpUrl(photoRaw),
   };
 
   const hasContent =
