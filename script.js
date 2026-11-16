@@ -405,14 +405,18 @@ function formatPremiumFrequency(raw) {
     : text;
 }
 
+/* Same rule Secure enforces on save: an optional $, thousands commas in groups
+   of exactly three digits, and up to two decimals. */
+const PREMIUM_AMOUNT_PATTERN = /^\$?(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d{1,2})?$/;
+
 function formatPremiumAmount(raw) {
   if (!nonEmpty(raw)) return "";
   const text = raw.toString().trim();
-  const digits = text.replace(/[$,\s]/g, "");
-  // Plain amounts with at most two decimals become $48.20; anything else
-  // ("about 50", 48.205) is shown exactly as the client typed it.
-  if (/^\d+(\.\d{1,2})?$/.test(digits)) {
-    return "$" + Number(digits).toLocaleString("en-US", {
+  // Valid amounts become $48.20. Anything else (older or hand-edited records
+  // such as "12,34", "48 20", "48$20", "about 50") is shown exactly as saved,
+  // never reinterpreted as a different dollar amount.
+  if (PREMIUM_AMOUNT_PATTERN.test(text)) {
+    return "$" + Number(text.replace(/[$,]/g, "")).toLocaleString("en-US", {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
     });
