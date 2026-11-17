@@ -83,6 +83,8 @@ function formatDispositionPath(services) {
     burial: "Burial",
     cremation: "Cremation",
     both: "Cremation → Burial of ashes",
+    // Current Secure value for the same choice; same label as legacy "both".
+    cremation_with_burial: "Cremation → Burial of ashes",
     not_sure: "Not yet decided"
   };
 
